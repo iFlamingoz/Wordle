@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation("org.yaml:snakeyaml:2.2")
     implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("com.h2database:h2:2.4.240")
 }
 
 tasks.build {

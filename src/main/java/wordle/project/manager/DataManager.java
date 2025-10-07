@@ -60,7 +60,7 @@ public class DataManager {
 
     private void saveData(Object data, String fileName) {
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            FileOutputStream fileOutputStream = new FileOutputStream(System.getenv("APPDATA") + "/.wordle/" + fileName);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             objectOutputStream.writeObject(data);

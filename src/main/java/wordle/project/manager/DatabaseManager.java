@@ -5,6 +5,11 @@ import wordle.project.data.Account;
 import wordle.project.data.GameData;
 import wordle.project.data.SubmissionResults;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +23,13 @@ public class DatabaseManager {
         ConfigManager config = Wordle.getConfigManager();
 
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://" + config.getAddress() + " /" + config.getDatabase(),
-                    config.getUsername(), config.getPassword());
+            if (config.isEnabled()) {
+                connection = DriverManager.getConnection("jdbc:mysql://" + config.getAddress() + "/" + config.getDatabase(),
+                        config.getUsername(), config.getPassword());
+            } else {
+                connection = DriverManager.getConnection("jdbc:h2:" + System.getenv("APPDATA") + "/.wordle/wordle");
+            }
+
         } catch (SQLException exception) {
             exception.printStackTrace();
             System.exit(exception.getErrorCode());
@@ -29,6 +39,9 @@ public class DatabaseManager {
             System.out.println("Could not connect to the database");
             System.exit(-1);
         }
+
+        createTableIfExists("create table accounts (accountid int NOT NULL, username varchar(32), password varchar(32), wins int, losses int, total_guesses int, match_history longtext, PRIMARY KEY (accountid))");
+        createTableIfExists("create table games (gameid int NOT NULL primary key, word varchar(16), guess_count int, submissions longtext)");
     }
 
     public void saveGame(GameData game) {
@@ -152,6 +165,13 @@ public class DatabaseManager {
         }
 
         return false;
+    }
+
+    private void createTableIfExists(String statement) {
+        try (PreparedStatement pst = connection.prepareStatement(statement)) {
+            pst.execute();
+        } catch (SQLException ignore) {
+        }
     }
 
     private void execute(String statement, Object... data) {
