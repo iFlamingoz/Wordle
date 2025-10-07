@@ -1,7 +1,6 @@
 package wordle.project.data;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class GameData {
     private final int gameID;

@@ -13,17 +13,19 @@ repositories {
 }
 
 dependencies {
+    implementation("org.yaml:snakeyaml:2.2")
     implementation("mysql:mysql-connector-java:8.0.33")
 }
 
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
+
 publishing.publications.create<MavenPublication>("maven") {
     artifact(tasks["shadowJar"])
 }
 
-tasks.jar {
+tasks.shadowJar {
     manifest {
         attributes("Main-Class" to "wordle.project.Wordle")
     }

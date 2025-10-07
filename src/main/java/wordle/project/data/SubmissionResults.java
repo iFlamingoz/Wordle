@@ -1,7 +1,6 @@
 package wordle.project.data;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class SubmissionResults {

@@ -6,13 +6,10 @@ import wordle.project.data.GameData;
 import wordle.project.data.GeneralData;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
 public class DataManager {
-    private final DB db = new DB();
-
     private int highestAccountID;
     private int highestGameID;
 
@@ -30,7 +27,7 @@ public class DataManager {
             throw new RuntimeException(e);
         }
 
-        for (Account account : db.getAccounts()) {
+        for (Account account : Wordle.getDatabaseManager().getAccounts()) {
             if (account.getID() > highestAccountID) {
                 highestAccountID = account.getID();
             }
@@ -38,7 +35,7 @@ public class DataManager {
             accounts.put(account.getID(), account);
         }
 
-        highestGameID = db.getHighestGameId();
+        highestGameID = Wordle.getDatabaseManager().getHighestGameId();
         generalData = readData("general_data.txt", new GeneralData());
     }
 
@@ -100,7 +97,7 @@ public class DataManager {
     }
 
     public void saveAccount() {
-        db.saveAccount(Wordle.getAccount());
+        Wordle.getDatabaseManager().saveAccount(Wordle.getAccount());
     }
 
     public List<String> getPossibleWords() {
@@ -113,21 +110,18 @@ public class DataManager {
 
     public void onGameEnd(GameData gameData) {
         Wordle.getAccount().addMatch(gameData);
-        db.saveAccount(Wordle.getAccount());
-        db.saveGame(gameData);
+        Wordle.getDatabaseManager().saveAccount(Wordle.getAccount());
+        Wordle.getDatabaseManager().saveGame(gameData);
     }
 
     public Account createAccount(String username, String password) {
         Account account = new Account(++highestAccountID, username, password);
         accounts.put(account.getID(), account);
-        db.saveAccount(account);
+        Wordle.getDatabaseManager().saveAccount(account);
         return account;
     }
 
     private URL getFile(String fileName) {
         return getClass().getClassLoader().getResource(fileName);
-
-//        System.out.println("fileName = " + getClass().getClassLoader().getResource(fileName).getFile());;
-//        return new File(getClass().getClassLoader().getResource(fileName).getFile());
     }
 }

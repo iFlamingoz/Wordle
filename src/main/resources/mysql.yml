@@ -1,0 +1,5 @@
+enabled: false
+address: "localhost"
+database: "wordle"
+username: "root"
+password: ""

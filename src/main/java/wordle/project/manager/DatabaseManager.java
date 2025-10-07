@@ -1,5 +1,6 @@
 package wordle.project.manager;
 
+import wordle.project.Wordle;
 import wordle.project.data.Account;
 import wordle.project.data.GameData;
 import wordle.project.data.SubmissionResults;
@@ -10,12 +11,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class DB {
+public class DatabaseManager {
     private Connection connection;
 
-    public DB() {
+    public DatabaseManager() {
+        ConfigManager config = Wordle.getConfigManager();
+
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/wordle", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://" + config.getAddress() + " /" + config.getDatabase(),
+                    config.getUsername(), config.getPassword());
         } catch (SQLException exception) {
             exception.printStackTrace();
             System.exit(exception.getErrorCode());
@@ -36,7 +40,7 @@ public class DB {
 
             submissionData.add(submission.getInputWord() + "-"
                     + String.join(",", Arrays.stream(submission.getResults())
-                    .map(v -> v.name())
+                    .map(Enum::name)
                     .toList()));
         }
 
