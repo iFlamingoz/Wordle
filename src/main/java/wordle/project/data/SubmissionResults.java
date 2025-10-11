@@ -1,8 +1,11 @@
 package wordle.project.data;
 
+import lombok.Getter;
+
 import java.awt.*;
 import java.util.HashMap;
 
+@Getter
 public class SubmissionResults {
     private final String correctWord;
     private final String inputWord;
@@ -85,14 +88,7 @@ public class SubmissionResults {
         return correctWord.equals(inputWord);
     }
 
-    public String getInputWord() {
-        return inputWord;
-    }
-
-    public Result[] getResults() {
-        return results;
-    }
-
+    @Getter
     public enum Result {
         CORRECT(Color.GREEN),
         WRONG_POSITION(Color.YELLOW),
@@ -102,10 +98,6 @@ public class SubmissionResults {
 
         Result(Color colour) {
             this.colour = colour;
-        }
-
-        public Color getColour() {
-            return colour;
         }
     }
 }

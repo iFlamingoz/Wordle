@@ -5,11 +5,6 @@ import wordle.project.data.Account;
 import wordle.project.data.GameData;
 import wordle.project.data.SubmissionResults;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,8 +35,8 @@ public class DatabaseManager {
             System.exit(-1);
         }
 
-        createTableIfExists("create table accounts (accountid int NOT NULL, username varchar(32), password varchar(32), wins int, losses int, total_guesses int, match_history longtext, PRIMARY KEY (accountid))");
-        createTableIfExists("create table games (gameid int NOT NULL primary key, word varchar(16), guess_count int, submissions longtext)");
+        createTableIfNotExists("create table accounts (accountid int NOT NULL, username varchar(32), password varchar(32), wins int, losses int, total_guesses int, match_history longtext, PRIMARY KEY (accountid))");
+        createTableIfNotExists("create table games (gameid int NOT NULL primary key, word varchar(16), guess_count int, submissions longtext)");
     }
 
     public void saveGame(GameData game) {
@@ -167,7 +162,7 @@ public class DatabaseManager {
         return false;
     }
 
-    private void createTableIfExists(String statement) {
+    private void createTableIfNotExists(String statement) {
         try (PreparedStatement pst = connection.prepareStatement(statement)) {
             pst.execute();
         } catch (SQLException ignore) {

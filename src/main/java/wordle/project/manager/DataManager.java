@@ -1,12 +1,12 @@
 package wordle.project.manager;
 
+import lombok.Getter;
 import wordle.project.Wordle;
 import wordle.project.data.Account;
 import wordle.project.data.GameData;
 import wordle.project.data.GeneralData;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 public class DataManager {
@@ -14,15 +14,17 @@ public class DataManager {
     private int highestGameID;
 
     private final HashMap<Integer, Account> accounts = new HashMap<>();
-    private final List<String> possibleWords = new ArrayList<>();
 
+    @Getter
+    private final List<String> possibleWords = new ArrayList<>();
+    @Getter
     private final GeneralData generalData;
 
     public DataManager() {
-        try (Scanner scanner = new Scanner(getFile("words.txt").openStream())) {
-            while (scanner.hasNext()) {
+        try (InputStream wordResource = getClass().getClassLoader().getResourceAsStream("words.txt");
+             Scanner scanner = new Scanner(Objects.requireNonNull(wordResource))) {
+            while (scanner.hasNext())
                 possibleWords.addAll(Arrays.asList(scanner.next().split(";")));
-            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +43,8 @@ public class DataManager {
 
     private <T> T readData(String name, T defaultValue) {
         try {
-            InputStream inputStream = getFile(name).openStream();
+            File file = new File(System.getenv("APPDATA") + "/.wordle/" + name);
+            InputStream inputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             T value = (T) objectInputStream.readObject();
 
@@ -100,14 +103,6 @@ public class DataManager {
         Wordle.getDatabaseManager().saveAccount(Wordle.getAccount());
     }
 
-    public List<String> getPossibleWords() {
-        return possibleWords;
-    }
-
-    public GeneralData getGeneralData() {
-        return generalData;
-    }
-
     public void onGameEnd(GameData gameData) {
         Wordle.getAccount().addMatch(gameData);
         Wordle.getDatabaseManager().saveAccount(Wordle.getAccount());
@@ -119,9 +114,5 @@ public class DataManager {
         accounts.put(account.getID(), account);
         Wordle.getDatabaseManager().saveAccount(account);
         return account;
-    }
-
-    private URL getFile(String fileName) {
-        return getClass().getClassLoader().getResource(fileName);
     }
 }

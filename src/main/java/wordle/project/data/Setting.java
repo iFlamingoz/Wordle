@@ -1,5 +1,6 @@
 package wordle.project.data;
 
+import lombok.Getter;
 import wordle.project.Wordle;
 
 import java.util.function.BiFunction;
@@ -46,7 +47,9 @@ public enum Setting {
         return null;
     });
 
+    @Getter
     private final String input;
+    @Getter
     private final String updateDescription;
     private final BiFunction<Account, String, String> action;
 
@@ -54,14 +57,6 @@ public enum Setting {
         this.input = input;
         this.updateDescription = updateDescription;
         this.action = action;
-    }
-
-    public String getInput() {
-        return input;
-    }
-
-    public String getUpdateDescription() {
-        return updateDescription;
     }
 
     public String performAction(Account account, String value) {

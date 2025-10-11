@@ -1,5 +1,7 @@
 package wordle.project.window.generic;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import wordle.project.data.WindowType;
 
 import javax.swing.*;
@@ -7,15 +9,17 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+@Getter
 public abstract class Window extends JPanel {
-    private final String name;
+    private final String title;
     private final WindowType windowType;
+    @Accessors(fluent = true)
     private final boolean canBePaused;
 
-    protected Window(WindowType windowType, String name, boolean canBePaused) {
+    protected Window(WindowType windowType, String title, boolean canBePaused) {
         this.windowType = windowType;
         this.canBePaused = canBePaused;
-        this.name = name;
+        this.title = title;
     }
 
     protected JLabel createSection(String title) {
@@ -47,16 +51,4 @@ public abstract class Window extends JPanel {
     }
 
     public abstract void onShow();
-
-    public boolean canBePaused() {
-        return canBePaused;
-    }
-
-    public String getTitle() {
-        return name;
-    }
-
-    public WindowType getWindowType() {
-        return windowType;
-    }
 }

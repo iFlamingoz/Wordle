@@ -1,10 +1,15 @@
 package wordle.project.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class Account implements Serializable {
     @Serial
     private static final long serialVersionUID = 1;
@@ -29,42 +34,6 @@ public class Account implements Serializable {
         this.losses = losses;
         this.totalGuesses = totalGuesses;
         this.matchHistory = matchHistory;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public int getWins() {
-        return wins;
-    }
-
-    public int getLosses() {
-        return losses;
-    }
-
-    public int getTotalGuesses() {
-        return totalGuesses;
-    }
-
-    public List<GameData> getMatchHistory() {
-        return matchHistory;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void addMatch(GameData gameData) {

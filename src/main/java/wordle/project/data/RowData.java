@@ -1,11 +1,12 @@
 package wordle.project.data;
 
+import lombok.Getter;
 import wordle.project.Wordle;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
+@Getter
 public class RowData {
     private final java.util.List<Label> labels = new ArrayList<>();
     private String wordInput = "";
@@ -27,23 +28,20 @@ public class RowData {
         }
     }
 
-    public boolean inputLetter(String letter) {
+    public void inputLetter(String letter) {
         if (wordInput.length() >= 5)
-            return false;
+            return;
 
         labels.get(wordInput.length()).setText(letter);
         wordInput += letter;
-
-        return true;
     }
 
-    public boolean deleteLetter() {
+    public void deleteLetter() {
         if (wordInput.isEmpty())
-            return false;
+            return;
 
         wordInput = wordInput.substring(0, wordInput.length() - 1);
         labels.get(wordInput.length()).setText("-");
-        return true;
     }
 
     public void reset() {
@@ -53,13 +51,5 @@ public class RowData {
         }
 
         wordInput = "";
-    }
-
-    public List<Label> getLabels() {
-        return labels;
-    }
-
-    public String getWordInput() {
-        return wordInput;
     }
 }

@@ -1,5 +1,6 @@
 package wordle.project.manager;
 
+import lombok.Getter;
 import wordle.project.Wordle;
 import wordle.project.data.GameData;
 import wordle.project.data.RowData;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GameManager {
+    @Getter
     private boolean active;
     private GameData gameData;
     private final RowData[] rows = new RowData[6];
@@ -51,14 +53,6 @@ public class GameManager {
             ((GameResultsWindow) Wordle.getWindowManager().getWindow(WindowType.GAME_RESULTS)).setData(WindowType.PAUSE, gameData);
             Wordle.getWindowManager().switchToWindow(WindowType.GAME_RESULTS);
         }
-    }
-
-    public GameData getGameData() {
-        return gameData;
-    }
-
-    public boolean isActive() {
-        return active;
     }
 
     public RowData getCurrentRow() {

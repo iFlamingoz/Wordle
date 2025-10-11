@@ -1,15 +1,17 @@
 package wordle.project.manager;
 
+import lombok.Getter;
 import org.yaml.snakeyaml.Yaml;
 
 import java.util.Map;
 
+@Getter
 public class ConfigManager {
-    private boolean enabled;
-    private String address;
-    private String database;
-    private String username;
-    private String password;
+    private final boolean enabled;
+    private final String address;
+    private final String database;
+    private final String username;
+    private final String password;
 
     public ConfigManager() {
         Yaml yaml = new Yaml();
@@ -19,25 +21,5 @@ public class ConfigManager {
         database = (String) config.get("database");
         username = (String) config.get("username");
         password = (String) config.get("password");
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getDatabase() {
-        return database;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

@@ -1,5 +1,7 @@
 package wordle.project.data;
 
+import lombok.Getter;
+
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,9 +12,11 @@ public enum LeaderboardType {
     WIN_PERCENT(v -> (int) (v.getWins() / (double) (v.getWins() + v.getLosses()) * 100), Color.CYAN),
     GUESSES(Account::getTotalGuesses, Color.GREEN);
 
+    @Getter
     private final String formattedName;
     private final ToIntFunction<Account> keyGetter;
     private final Comparator<Account> comparator;
+    @Getter
     private final Color colour;
 
     LeaderboardType(ToIntFunction<Account> keyGetter, Color colour) {
@@ -22,19 +26,11 @@ public enum LeaderboardType {
         this.colour = colour;
     }
 
-    public String getFormattedName() {
-        return formattedName;
-    }
-
     public int getValue(Account account) {
         return keyGetter.applyAsInt(account);
     }
 
     public Comparator<Account> comparator() {
         return comparator;
-    }
-
-    public Color getColour() {
-        return colour;
     }
 }

@@ -1,7 +1,10 @@
 package wordle.project.data;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public class GameData {
     private final int gameID;
 
@@ -34,21 +37,5 @@ public class GameData {
     public int addAndGetGuessCount() {
         this.guessCount++;
         return guessCount;
-    }
-
-    public SubmissionResults[] getGuessData() {
-        return guessData;
-    }
-
-    public int getGuessCount() {
-        return guessCount;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public int getGameID() {
-        return gameID;
     }
 }
